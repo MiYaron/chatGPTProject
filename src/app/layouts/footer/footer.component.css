@@ -1,0 +1,17 @@
+footer {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+    height: 35px;
+    font-size: 0.7rem;
+    font-weight: 100;
+
+    span{
+        color: var(--color-grey-ultradark);
+    }
+
+    a {
+        text-decoration: underline;
+    }
+}

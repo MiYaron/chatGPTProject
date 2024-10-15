@@ -1,0 +1,12 @@
+<div class="message-bar">
+  <form>
+    <textarea
+      id="message-input"
+      [(ngModel)]="text"
+      (input)="resizeTextArea($event)"
+      rows="1"
+      placeholder="Message ChatGPT"
+    ></textarea>
+  </form>
+  <button id="send-button"></button>
+</div>

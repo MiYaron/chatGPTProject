@@ -1,0 +1,31 @@
+.message-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background-color: var(--color-grey-light);
+    border-radius: 26px;
+    padding: 10px;
+    width: fit-content
+}
+
+#message-input {
+    flex-grow: 1;
+    width: 900vw;
+    max-width: 692px;
+    overflow: hidden;
+    resize: none;
+    background: transparent;
+    background-color: transparent;
+    border: none;
+    outline: none; 
+    font-size: 16px;
+    margin: 0px 12px;
+}
+
+#send-button {
+    background-color: var(--color-black);
+    border: 0;
+    border-radius: 16px;
+    width: 32px;
+    height: 32px;    
+}

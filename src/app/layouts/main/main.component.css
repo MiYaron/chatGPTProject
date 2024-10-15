@@ -1,0 +1,10 @@
+main {
+    position: fixed;
+    flex: 1;
+    align-items: flex-end;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    bottom:0;
+    margin-bottom: 50vh;
+}
