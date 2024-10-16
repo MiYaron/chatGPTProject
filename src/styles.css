@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 :root {
     --color-grey-ultralight: #f9f9f9;
     --color-grey-light: #f4f4f4;
@@ -6,8 +8,6 @@
     --color-grey-ultradark: #747474;
     --color-black: #0d0d0d;
     --solid-red: #ED4264;
-
-    font-size: 20px;
 }
 
 * {
@@ -19,7 +19,18 @@
     margin: 0px;
 }
 
+.light-button {
+    background-color: transparent;
+    border: 1px solid var(--color-grey-dark);
+    color: var(--color-black);
+}
 
-h1 {
-    text-align: center;
+.light-button:hover {
+    background-color: var(--color-grey-light);
+}
+
+.dark-button {
+    background-color: var(--color-black);
+    border: 1px solid var(--color-black);
+    color: white;
 }

@@ -1,5 +1,7 @@
 .small-button {
-    border: 1px solid;
-    border-radius: 15px;
-    padding: 5px 10px;
+    border-radius: 26px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
 }

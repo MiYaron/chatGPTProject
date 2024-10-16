@@ -1,1 +1,10 @@
-<p>chat works!</p>
+<div id="chat">
+  <div id="chat-window" #chatWindow>
+    <div class="message" *ngFor="let message of messages">
+      <div *ngIf="message.from === 'bot'" class="bot-profile"></div>
+      <p [ngClass]="message.from">{{ message.message }}</p>
+    </div>
+  </div>
+  <app-message-bar />
+  <span> ChatGPT can make mistakes. Check important info. </span>
+</div>

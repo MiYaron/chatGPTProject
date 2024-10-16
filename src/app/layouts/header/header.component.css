@@ -2,7 +2,7 @@ header {
     position: absolute;
     display: flex;
     background-color: white;
-    width: 100%;
+    width: 100vw;
     justify-content: space-between;
     padding: 10px;
     top: 0;
@@ -15,11 +15,52 @@ header {
 
 #auth {
     display: flex;
+    gap: 12px;
 }
 
-.test {
+.llm-model {
     display: flex;
-    font-size: 24px;
-    font-weight: bold;
-    background-color: cyan;
+    align-items: end;
+    gap: 5px;
+    background-color: transparent;
+    
+    p {
+        color: var(--color-grey-ultradark);
+        font-weight: 700;
+        font-size: 1.2rem;
+        height: 18px;
+    }
+    #arrow-down {
+        background-color: transparent;
+        background-image: url('../../../assets/images/arrow_menu.png');
+        background-size: contain; 
+        background-position: bottom; 
+        background-repeat: no-repeat; 
+        border: 0;
+        width: 12px;
+        height: 8px;
+        margin-bottom: 2px;
+        cursor: pointer;
+    }
+}
+
+#new-chat {
+    background-color: transparent;
+    background-image: url('../../../assets/images/new_msg.png');
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    border: 0;
+    width: 18px;
+    height: 18px;
+}
+
+@media (max-width: 767px) {
+    #llm-button {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    #signup {
+        display: none;
+    }
 }

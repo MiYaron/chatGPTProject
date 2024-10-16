@@ -1,12 +1,20 @@
-<div class="message-bar">
-  <form>
+<div class="message-box">
+  <form id="message-form" (submit)="$event.preventDefault(); sendMessage()">
     <textarea
+      #textarea
+      name="message"
       id="message-input"
       [(ngModel)]="text"
       (input)="resizeTextArea($event)"
       rows="1"
       placeholder="Message ChatGPT"
     ></textarea>
+    <button
+      id="send-button"
+      [ngClass]="loadingResponse ? 'stop' : ''"
+      type="submit"
+      [disabled]="!text.trim() && !loadingResponse"
+      (click)="loadingResponse ? cancelResponse() : null"
+    ></button>
   </form>
-  <button id="send-button"></button>
 </div>

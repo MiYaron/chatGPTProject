@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MessageBarComponent } from '../../components/message-bar/message-bar.component';
 import { SuggestionsComponent } from '../../components/suggestions/suggestions.component';
 
@@ -10,5 +10,9 @@ import { SuggestionsComponent } from '../../components/suggestions/suggestions.c
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  @ViewChild(MessageBarComponent) messageBarComponent!: MessageBarComponent;
 
+  onSuggestionSelected(suggestion: string) {
+    this.messageBarComponent.setInputMessage(suggestion);
+  }
 }

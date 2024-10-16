@@ -1,1 +1,17 @@
-<p>suggestions works!</p>
+<div class="suggestions-buttons">
+  <app-large-button
+    *ngFor="let button of suggestions"
+    [icon]="button.icon"
+    [label]="button.label"
+    [onClick]="button.onClick"
+  />
+</div>
+
+<div class="suggestions-grid">
+  <div *ngFor="let button of suggestions.slice(0, 4)" class="small-suggestion">
+    <div (click)="button.onClick()">
+      <h4>{{ button.label }}</h4>
+      <p>{{ button.label }}</p>
+    </div>
+  </div>
+</div>

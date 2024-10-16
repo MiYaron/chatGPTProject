@@ -1,0 +1,58 @@
+#home {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 32px;
+    padding: 12px;
+}
+
+h1 {
+    font-size: 1.7rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+span{
+    text-align: center;
+    width: 100%;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--color-grey-ultradark);
+}
+
+a {
+    text-decoration: underline;
+}
+
+@media (max-width: 1024px) {
+    #home {
+        height:  100vh;
+        gap: 16px;
+    }
+
+    #title {
+        width: 46px;
+        height: 46px;
+        background-image: url('../../../assets/images/gpt_logo.png');
+        background-size:auto;
+        background-repeat: no-repeat;
+        margin-right: auto;
+        margin-left: auto;
+
+        h1 {
+            display: none;
+        }
+    }
+
+    app-message-bar {
+        order: 2;
+    }
+
+    app-suggestions {
+        order: 1;
+    }
+
+    span {
+        order: 3;
+    }
+}

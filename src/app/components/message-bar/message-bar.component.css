@@ -1,31 +1,47 @@
-.message-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+.message-box {
     background-color: var(--color-grey-light);
     border-radius: 26px;
     padding: 10px;
-    width: fit-content
+}
+
+#message-form {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    width: 100%;
 }
 
 #message-input {
-    flex-grow: 1;
-    width: 900vw;
-    max-width: 692px;
+    flex: 1;
     overflow: hidden;
     resize: none;
+    justify-self: center;
     background: transparent;
-    background-color: transparent;
     border: none;
     outline: none; 
     font-size: 16px;
-    margin: 0px 12px;
+    margin: auto 12px;
 }
 
 #send-button {
     background-color: var(--color-black);
+    background-image: url('../../../assets/images/send.png');
+    background-size: auto; 
+    background-repeat: no-repeat; 
+    background-position: center; 
     border: 0;
     border-radius: 16px;
     width: 32px;
-    height: 32px;    
+    height: 32px;
+    cursor: pointer;
+}
+
+#send-button.stop {
+    background-image: url('../../../assets/images/stop.png');
+    background-size: 40%;
+}
+
+#send-button:disabled {
+    background-color: var(--color-grey-dark);
+    cursor:default;
 }

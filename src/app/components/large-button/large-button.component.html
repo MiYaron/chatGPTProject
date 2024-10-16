@@ -1,1 +1,6 @@
-<p>large-button works!</p>
+<button class="large-button light-button" (click)="onClick()">
+  <div class="button-content">
+    <div class="button-icon" [ngClass]="icon"></div>
+    {{ label }}
+  </div>
+</button>

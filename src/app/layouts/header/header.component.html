@@ -1,19 +1,19 @@
 <header>
   <div id="menu">
-    <app-menu-button></app-menu-button>
-    <app-menu-button>
-      <div class="test">
+    <app-menu-button (click)="newConversation()">
+      <div id="new-chat"></div>
+    </app-menu-button>
+    <app-menu-button id="llm-button">
+      <div class="llm-model">
         <p>ChatGPT 4o mini</p>
-        <p>^</p>
+        <div id="arrow-down"></div>
       </div>
     </app-menu-button>
   </div>
   <div id="auth">
-    <app-small-button [backgroundColor]="'black'" [color]="'white'">
-      <p>Log in</p>
-    </app-small-button>
-    <app-small-button>
-      <p>Signup</p>
+    <app-small-button [style]="'dark-button'"> Log in </app-small-button>
+    <app-small-button [style]="'light-button'" id="signup">
+      <p>Sign up</p>
     </app-small-button>
   </div>
 </header>

@@ -1,3 +1,4 @@
 <main>
-  <app-home />
+  <app-home *ngIf="!isActiveChat" />
+  <app-chat *ngIf="isActiveChat" />
 </main>
