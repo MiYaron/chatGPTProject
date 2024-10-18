@@ -6,6 +6,7 @@
       id="message-input"
       [(ngModel)]="text"
       (input)="resizeTextArea($event)"
+      (keydown)="handleKeydown($event)"
       rows="1"
       placeholder="Message ChatGPT"
     ></textarea>

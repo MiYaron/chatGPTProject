@@ -1,6 +1,7 @@
 <div id="home">
   <div id="title">
-    <h1>What can I help with?</h1>
+    <h1><app-typewriter [text]="'What can I help with?'" /></h1>
+    <div class="marker-dot"></div>
   </div>
   <app-message-bar />
   <app-suggestions (selectedSuggestion)="onSuggestionSelected($event)" />

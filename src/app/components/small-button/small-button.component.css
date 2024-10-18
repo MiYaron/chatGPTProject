@@ -1,7 +1,9 @@
 .small-button {
     border-radius: 26px;
-    padding: 6px 12px;
-    font-size: 0.9rem;
     font-weight: 600;
+    font-size: 0.9rem;
+    min-width: fit-content;
+    padding: 6px 12px;
+    white-space: nowrap;
     cursor: pointer;
 }

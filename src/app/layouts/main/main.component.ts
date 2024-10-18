@@ -16,7 +16,7 @@ export class MainComponent {
   constructor(private messagingService: MessagingService) {}
 
   ngOnInit() {
-    this.messagingService.activeChat.subscribe((messages) => {
+    this.messagingService.messagesSubject.subscribe((messages) => {
       if (messages.length > 0) {
         this.isActiveChat = true;
       } else {

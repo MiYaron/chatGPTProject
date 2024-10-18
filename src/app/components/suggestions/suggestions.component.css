@@ -11,18 +11,10 @@
     gap: 10px;
 }
 
-.small-suggestion {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 10px;
-    border: 1px solid var(--color-grey-dark);
-    border-radius: 12px;
-    cursor: pointer;
-
-    p {
-        color: var(--color-grey-ultradark);
-    }
+app-clickable-card {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 1024px) {
@@ -31,8 +23,7 @@
     }
 
     .suggestions-grid {
-    display: grid;
-
+      display: grid;
     }
       
 }

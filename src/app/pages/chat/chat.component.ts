@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MessageBarComponent } from '../../components/message-bar/message-bar.component';
 import { MessagingService, Message } from '../../services/messaging.service';
+import { TypewriterComponent } from '../../components/typewriter/typewriter.component';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [CommonModule, MessageBarComponent],
+  imports: [CommonModule, MessageBarComponent, TypewriterComponent],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css'
 })
@@ -17,7 +18,7 @@ export class ChatComponent implements OnInit, AfterViewChecked{
   constructor(private messagingService: MessagingService) {}
 
   ngOnInit() {
-    this.messagingService.activeChat.subscribe((messages) => {
+    this.messagingService.messagesSubject.subscribe((messages) => {
       this.messages = messages;
     })
   }
@@ -27,5 +28,4 @@ export class ChatComponent implements OnInit, AfterViewChecked{
       this.chatWindow.nativeElement.scrollTop = this.chatWindow.nativeElement.scrollHeight;
     }
   }
-
 }

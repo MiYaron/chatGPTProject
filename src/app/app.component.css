@@ -3,11 +3,13 @@
     justify-content: center;
     width: 100vw;
 }
+
 app-main {
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    max-width: 768px;
+    max-width: 792px;
+    padding: 12px;
     height: 100vh;
 }

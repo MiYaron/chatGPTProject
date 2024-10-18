@@ -3,11 +3,24 @@
     flex-direction: column;
     justify-content: flex-end;
     gap: 32px;
-    padding: 12px;
+}
+#title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.marker-dot {
+    height: 1.5em;
+    width: 1.5em;
+    background-color: black; 
+    border-radius: 100%;
+    aspect-ratio: 1;
 }
 
 h1 {
-    font-size: 1.7rem;
+    font-size: 2rem;
     text-align: center;
     font-weight: 600;
 }
@@ -27,7 +40,7 @@ a {
 @media (max-width: 1024px) {
     #home {
         height:  100vh;
-        gap: 16px;
+        gap: 24px;
     }
 
     #title {
@@ -38,10 +51,14 @@ a {
         background-repeat: no-repeat;
         margin-right: auto;
         margin-left: auto;
+        margin-bottom: 36vh;
 
         h1 {
             display: none;
         }
+    }
+    .marker-dot {
+        display: none;
     }
 
     app-message-bar {
@@ -54,5 +71,11 @@ a {
 
     span {
         order: 3;
+    }
+}
+
+@media (max-width: 768px) {
+    #title {
+        margin-bottom: 0;
     }
 }

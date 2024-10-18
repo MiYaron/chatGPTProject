@@ -15,6 +15,5 @@ export class HeaderComponent {
   
   newConversation() {
     this.messagingService.resetChat();
-
   }
 }

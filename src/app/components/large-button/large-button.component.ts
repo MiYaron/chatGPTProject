@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 export interface LargeButton {
-  icon?: string;
+  icon: string;
   label: string;
   onClick: ()=>void;
 }
@@ -15,7 +15,7 @@ export interface LargeButton {
   styleUrl: './large-button.component.css'
 })
 export class LargeButtonComponent {
-  @Input() icon?: string;
+  @Input() icon!: string;
   @Input() label!: string;
   @Input() onClick!: ()=> void;
 }

@@ -1,8 +1,16 @@
 <div id="chat">
   <div id="chat-window" #chatWindow>
     <div class="message" *ngFor="let message of messages">
-      <div *ngIf="message.from === 'bot'" class="bot-profile"></div>
-      <p [ngClass]="message.from">{{ message.message }}</p>
+      <div *ngIf="message.from === 'bot'" style="display: flex">
+        <div class="bot-profile"></div>
+        <pre
+          [ngClass]="message.from"
+          *ngIf="message.message !== ''"
+        ><app-typewriter [text]="message.message"/></pre>
+      </div>
+      <pre *ngIf="message.from === 'user'" [ngClass]="message.from">{{
+        message.message
+      }}</pre>
     </div>
   </div>
   <app-message-bar />

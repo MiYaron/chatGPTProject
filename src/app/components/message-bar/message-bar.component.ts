@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MessagingService, Message } from '../../services/messaging.service';
+import { MessagingService } from '../../services/messaging.service';
 
 @Component({
   selector: 'app-message-bar',
@@ -43,19 +43,22 @@ export class MessageBarComponent {
   }
 
   sendMessage() {
-    if (this.text !== '') {
-      const newMessage: Message = {
-        from: 'user',
-        message: this.text,
-        time: Date.now()
-      }
-
-      this.messagingService.addMessage(newMessage);
+    if (this.text.trim() !== '') {
+      this.messagingService.sendMessage(this.text);
       this.text = '';
     }
   }
 
   cancelResponse() {
     this.messagingService.cancelResponse();
+  }
+
+  handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      if (!event.shiftKey) {
+        event.preventDefault();
+        this.sendMessage();
+      }
+    }
   }
 }
