@@ -1,15 +1,15 @@
 <div id="chat">
   <div id="chat-window" #chatWindow>
     <div class="message" *ngFor="let message of messages">
-      <div *ngIf="message.from === 'bot'" style="display: flex">
+      <div *ngIf="message.role === 'assistant'" style="display: flex">
         <div class="bot-profile"></div>
         <pre
-          [ngClass]="message.from"
-          *ngIf="message.message !== ''"
-        ><app-typewriter [text]="message.message"/></pre>
+          [ngClass]="message.role"
+          *ngIf="message.content !== ''"
+        ><app-typewriter [text]="message.content"/></pre>
       </div>
-      <pre *ngIf="message.from === 'user'" [ngClass]="message.from">{{
-        message.message
+      <pre *ngIf="message.role === 'user'" [ngClass]="message.role">{{
+        message.content
       }}</pre>
     </div>
   </div>

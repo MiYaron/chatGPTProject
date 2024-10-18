@@ -12,13 +12,14 @@ export class TypewriterComponent implements OnInit{
   @Input() text!: string;
   speed = 20;
   animatedText = '';
+  isAnimating = new BehaviorSubject<boolean>(false);
 
   ngOnInit() {
     this.animate(0);
   }
 
   private animate(i: number) {
-    if (i < this.text.length) {
+    if (i < this.text?.length) {
       this.animatedText += this.text.charAt(i);
       setTimeout(() => this.animate(++i), this.speed);
     }

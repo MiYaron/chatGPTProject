@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MessageBarComponent } from './message-bar.component';
 import { MessagingService } from '../../services/messaging.service';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('MessageBarComponent', () => {
   let component: MessageBarComponent;
@@ -11,7 +12,7 @@ describe('MessageBarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MessageBarComponent],
-      providers: [MessagingService]
+      providers: [MessagingService, provideHttpClient()]
     })
     .compileComponents();
 
@@ -44,9 +45,9 @@ describe('MessageBarComponent', () => {
     let isMessageSent = false;
     component.text = 'Message to be sent';
 
-    messagingService.activeChat.subscribe((messages) => {
+    messagingService.messagesSubject.subscribe((messages) => {
       if (isMessageSent) {
-        expect(messages).toContain(jasmine.objectContaining({ message: 'Message to be sent' }));
+        expect(messages).toContain(jasmine.objectContaining({ content: 'Message to be sent' }));
         expect(messages.length).toBeGreaterThan(1);
         done();
       }

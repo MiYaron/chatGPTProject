@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuggestionsComponent } from './suggestions.component';
 import { MessagingService } from '../../services/messaging.service';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('SuggestionsComponent', () => {
   let component: SuggestionsComponent;
@@ -10,7 +11,10 @@ describe('SuggestionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SuggestionsComponent]
+      imports: [SuggestionsComponent],
+      providers: [
+        provideHttpClient()
+      ]
     })
     .compileComponents();
 
@@ -42,7 +46,7 @@ describe('SuggestionsComponent', () => {
   it('should automatically send task message', (done) => {
     let isMessageSent = false;
 
-    messagingService.activeChat.subscribe((messages) => {
+    messagingService.messagesSubject.subscribe((messages) => {
       if (isMessageSent) {
         expect(messages.length).toBe(2);
         done();

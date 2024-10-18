@@ -4,9 +4,9 @@ header {
     background-color: white;
     width: 100vw;
     justify-content: space-between;
-    padding: 10px;
+    padding: 10px 20px;
     top: 0;
-    z-index: 4;
+    z-index: 2;
 }
 
 #menu {

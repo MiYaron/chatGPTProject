@@ -10,6 +10,6 @@ app-main {
     justify-content: center;
     width: 100%;
     max-width: 792px;
-    padding: 12px;
     height: 100vh;
+    padding: 12px;
 }

@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    gap: 32px;
+    gap: 28px;
 }
 #title {
     display: flex;
@@ -25,22 +25,10 @@ h1 {
     font-weight: 600;
 }
 
-span{
-    text-align: center;
-    width: 100%;
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: var(--color-grey-ultradark);
-}
-
-a {
-    text-decoration: underline;
-}
-
 @media (max-width: 1024px) {
     #home {
         height:  100vh;
-        gap: 24px;
+        gap: 20px;
     }
 
     #title {

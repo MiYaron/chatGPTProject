@@ -4,8 +4,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, map, Subject, takeUntil } from 'rxjs';
 
 export interface Message {
-  from: 'user' | 'bot';
-  message: string;
+  role: 'user' | 'assistant';
+  content: string;
   time: number;
 }
 
@@ -19,7 +19,7 @@ export class MessagingService implements OnInit {
   private messages: Message[] = [];
   messagesSubject = new BehaviorSubject<Message[]>(this.messages);
 
-  private cancelRequest$= new Subject<void>();
+  private isCanceled= false;
   private responseTimeout: any;
   isLoading = new BehaviorSubject<boolean>(false);
 
@@ -31,28 +31,21 @@ export class MessagingService implements OnInit {
     this.key = this.cookieService.get('api_key');
   }
 
-  sendMessage(messageText: string) {
-    const newMessage: Message = {
-      from: 'user',
-      message: messageText,
-      time: Date.now()
-    }
-
-    this.addMessage(newMessage)
+  sendMessage(message: string) {
+    this.isCanceled = false;
+    this.addMessage('user', message);
+    this.responseMiddleware(message);
   }
 
-  addMessage(newMessage: Message): void {
-    this.messages.push(newMessage);
-    this.messagesSubject.next(this.messages);
-
-    this.responseMiddleware(newMessage.message);
-  }
-
-  
   cancelResponse() {
+      this.isCanceled = true;
+      const currentResponse = this.messages[this.messages.length - 1];
+      const writtenResponse = this.responseTimeout/20;
       clearTimeout(this.responseTimeout); 
-      this.cancelRequest$.next();
-      this.cancelRequest$.complete();
+
+      currentResponse.content = currentResponse.content.substring(0, writtenResponse);;
+
+      this.messagesSubject.next(this.messages);
       this.isLoading.next(false);
   }
 
@@ -61,6 +54,17 @@ export class MessagingService implements OnInit {
       this.messagesSubject.next(this.messages);
       clearTimeout(this.responseTimeout); 
       this.isLoading.next(false);
+  }
+
+  private addMessage(role: 'user' | 'assistant', content: string): void {
+    const newMessage: Message = {
+      role,
+      content,
+      time: Date.now()
+    }
+
+    this.messages.push(newMessage);
+    this.messagesSubject.next(this.messages);
   }
 
   private responseMiddleware(message: string) {
@@ -74,12 +78,12 @@ export class MessagingService implements OnInit {
         break;
       case "/stopMock":
         this.useMock = false;
-        this.askForKey();
+        this.responseMiddleware("Who are you?");
         break;
       case "/key":
         this.key = message.split(" ")[1];
         this.cookieService.set('api_key', this.key, { secure: true });
-        this.generateResponse(`Hey GPT! Please tell me what can i do with you`);
+        this.generateResponse(`Tell me that my key is valid, and i now can use your services`);
         break;
       case "/help":
         this.giveHelp();
@@ -97,56 +101,50 @@ export class MessagingService implements OnInit {
 
   private generateResponse(content: string) {
     const model = "gpt-4o-mini";
-    const messages = [{role: "user", content}];
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.key}`,
       'Content-type': 'application/json; charset=UTF-8',
     });
-    const botMessage: Message = {
-      from: 'bot',
-      message: '',
-      time: Date.now()
-    };
 
-    this.messages.push(botMessage);
-    this.messagesSubject.next(this.messages);
+    const messages = this.messages.map(({ role, content }) => ({
+      role,
+      content,
+    }));
 
-    this.http.post(`https://api.openai.com/v1/chat/completions`, { model, messages }, { headers }).pipe(
-      takeUntil(this.cancelRequest$),
+    this.addMessage('assistant','');
+
+    this.http.post(`https://api.openai.com/v1/chat/completions`, { model, messages}, { headers }).pipe(
       map((response: any) => {
         return response.choices[0]?.message?.content || '';
       })
     ).subscribe({
       next: (responseMessage: string) => {
-        this.messages[this.messages.length - 1].message = responseMessage;
-        this.messagesSubject.next(this.messages);
-        this.isLoading.next(false);
-        this.cancelRequest$.complete();
+        if (!this.isCanceled) {
+          this.messages[this.messages.length - 1].content = responseMessage;
+          this.messagesSubject.next(this.messages);
+
+          const waitingTime = responseMessage.length * 20;
+
+          this.responseTimeout = setTimeout(() => {
+            this.isLoading.next(false);
+            this.isCanceled = false;
+          }, waitingTime);
+        }
       },
       error: (error) => {
         if (error.status === 401) {
-          console.log (this.key);
-          this.messages[this.messages.length - 1].message = `I think you've provided me a wrong key`;
+          this.messages[this.messages.length - 1].content = `I think you've provided me a wrong key`;
           this.messagesSubject.next(this.messages);
         } else {
-          this.messages[this.messages.length - 1].message = `I'm Sorry, somthing went wrong, i can't respond to this`;
+          this.messages[this.messages.length - 1].content = `I'm Sorry, somthing went wrong, i can't respond to this`;
           this.messagesSubject.next(this.messages);
         }
-
-        this.isLoading.next(false);
-        this.cancelRequest$.complete();
       }
     });
   }
 
   private generateResponseMock() {
-    const botMessage: Message = {
-      from: 'bot',
-      message: '',
-      time: Date.now()
-    };
-    this.messages.push(botMessage);
-    this.messagesSubject.next(this.messages);
+    this.addMessage('assistant','');
 
     const botResponses: string[] = [
       "Hello! How can I help you?",
@@ -163,7 +161,7 @@ export class MessagingService implements OnInit {
     this.responseTimeout = setTimeout(() => {
       const response = botResponses[Math.floor(Math.random() * botResponses.length)];
 
-      this.messages[this.messages.length-1].message = response;
+      this.messages[this.messages.length-1].content = response;
       this.messagesSubject.next(this.messages)
       this.isLoading.next(false);
 
@@ -172,19 +170,13 @@ export class MessagingService implements OnInit {
 
   private askForKey() {
     this.isLoading.next(true);
-    const botMessage: Message = {
-      from: 'bot',
-      message: '',
-      time: Date.now()
-    };
-    this.messages.push(botMessage);
-    this.messagesSubject.next(this.messages);
 
+    this.addMessage('assistant','');
 
     this.responseTimeout = setTimeout(() => {
       const response = `If you want to use a real GPT bot please give me an api key. send "/help" for more information`
 
-      this.messages[this.messages.length-1].message = response;
+      this.messages[this.messages.length-1].content = response;
       this.messagesSubject.next(this.messages)
       this.isLoading.next(false);
 
@@ -193,14 +185,8 @@ export class MessagingService implements OnInit {
 
   private giveHelp() {
     this.isLoading.next(true);
-    const botMessage: Message = {
-      from: 'bot',
-      message: '',
-      time: Date.now()
-    };
-    this.messages.push(botMessage);
-    this.messagesSubject.next(this.messages);
 
+    this.addMessage('assistant','');
 
     this.responseTimeout = setTimeout(() => {
       const response = `Commands:
@@ -209,10 +195,9 @@ export class MessagingService implements OnInit {
       "/useMock" - use a mock that gives random answers
       "/stopMock" - stop using mock service`
 
-      this.messages[this.messages.length-1].message = response;
+      this.messages[this.messages.length-1].content = response;
       this.messagesSubject.next(this.messages)
       this.isLoading.next(false);
-
     }, 400);
   }
 }

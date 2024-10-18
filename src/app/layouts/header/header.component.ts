@@ -6,7 +6,7 @@ import { MessagingService } from '../../services/messaging.service';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MenuButtonComponent,SmallButtonComponent],
+  imports: [MenuButtonComponent, SmallButtonComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
