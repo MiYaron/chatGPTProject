@@ -1,7 +1,7 @@
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { BehaviorSubject, map } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { BehaviorSubject, map, Subject, takeUntil } from 'rxjs';
 
 export interface Message {
   role: 'user' | 'assistant';
@@ -12,51 +12,49 @@ export interface Message {
 @Injectable({
   providedIn: 'root'
 })
-export class MessagingService implements OnInit {
-  private key!: string | null;
+export class MessagingService {
+  private api_key!: string | null;
   private useMock = false;
 
   private messages: Message[] = [];
-  messagesSubject = new BehaviorSubject<Message[]>(this.messages);
+  activeChat = new BehaviorSubject<Message[]>(this.messages);
 
-  private isCanceled= false;
+  private isCanceled = false;
   private responseTimeout: any;
   isLoading = new BehaviorSubject<boolean>(false);
+  isTyping = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
-    this.key = this.cookieService.get('api_key');
-  }
-
-  ngOnInit() {
-    this.key = this.cookieService.get('api_key');
+    this.api_key = this.cookieService.get('api_key');
   }
 
   sendMessage(message: string) {
     this.isCanceled = false;
-    this.addMessage('user', message);
     this.responseMiddleware(message);
   }
 
   cancelResponse() {
-      this.isCanceled = true;
-      const currentResponse = this.messages[this.messages.length - 1];
-      const writtenResponse = this.responseTimeout/20;
-      clearTimeout(this.responseTimeout); 
+    this.isCanceled = true;
+    const currentResponse = this.messages[this.messages.length - 1];
+    currentResponse.content = ' ';
+    this.activeChat.next(this.messages);
 
-      currentResponse.content = currentResponse.content.substring(0, writtenResponse);;
-
-      this.messagesSubject.next(this.messages);
-      this.isLoading.next(false);
+    clearTimeout(this.responseTimeout); 
+    this.isLoading.next(false);
+    this.isTyping.next(false);
   }
 
   resetChat() {
-      this.messages.length = 0;
-      this.messagesSubject.next(this.messages);
-      clearTimeout(this.responseTimeout); 
-      this.isLoading.next(false);
+    this.isCanceled = false;
+    this.messages.length = 0;
+    this.activeChat.next(this.messages);
+
+    clearTimeout(this.responseTimeout); 
+    this.isLoading.next(false);
+    this.isTyping.next(false);
   }
 
-  private addMessage(role: 'user' | 'assistant', content: string): void {
+  private addMessage(role: 'user' | 'assistant', content: string): Message {
     const newMessage: Message = {
       role,
       content,
@@ -64,8 +62,55 @@ export class MessagingService implements OnInit {
     }
 
     this.messages.push(newMessage);
-    this.messagesSubject.next(this.messages);
+    this.activeChat.next(this.messages);
+
+    return newMessage;
   }
+  
+  private generateResponse() {
+    const model = "gpt-4o-mini";
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.api_key}`,
+      'Content-type': 'application/json; charset=UTF-8',
+    });
+
+    const messages = this.messages.map(({ role, content }) => ({
+      role,
+      content,
+    }));
+
+    const asstiantsMessage = this.addMessage('assistant','');
+
+    this.http.post(`https://api.openai.com/v1/chat/completions`, { model, messages}, { headers }).pipe(
+      map((response: any) => {
+        return response.choices[0]?.message?.content || '';
+      })
+    ).subscribe({
+      next: (responseMessage: string) => {
+        if (!this.isCanceled) {
+          asstiantsMessage.content = responseMessage;
+
+          this.activeChat.next(this.messages);
+
+          this.isLoading.next(false);
+        }
+      },
+      error: (error) => {
+        if (error.status === 401) {
+          asstiantsMessage.content = `I think you've provided me a wrong key`;
+          this.activeChat.next(this.messages);
+        } else {
+          asstiantsMessage.content = `I'm Sorry, somthing went wrong, i can't respond to this`;
+          this.activeChat.next(this.messages);
+        }
+
+        this.isLoading.next(false);
+      }
+    });
+  }
+  
+
+  /**********************      Mocks & Commands      **********************/
 
   private responseMiddleware(message: string) {
     this.isLoading.next(true);
@@ -78,80 +123,44 @@ export class MessagingService implements OnInit {
         break;
       case "/stopMock":
         this.useMock = false;
-        this.responseMiddleware("Who are you?");
+        this.responseMiddleware("Hey there!");
         break;
       case "/key":
-        this.key = message.split(" ")[1];
-        this.cookieService.set('api_key', this.key, { secure: true });
-        this.generateResponse(`Tell me that my key is valid, and i now can use your services`);
+        this.api_key = message.split(" ")[1];
+        this.cookieService.set('api_key', this.api_key, { secure: true });
+        this.responseMiddleware("Hey there!");
         break;
       case "/help":
         this.giveHelp();
         break;
       default:
+        this.addMessage('user', message);
         if (this.useMock) {
           this.generateResponseMock();
-        } else if(this.key) {
-          this.generateResponse(message);
+        } else if(this.api_key) {
+          this.generateResponse();
         } else {
           this.askForKey();
         }
     }
   }
 
-  private generateResponse(content: string) {
-    const model = "gpt-4o-mini";
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.key}`,
-      'Content-type': 'application/json; charset=UTF-8',
-    });
-
-    const messages = this.messages.map(({ role, content }) => ({
-      role,
-      content,
-    }));
-
-    this.addMessage('assistant','');
-
-    this.http.post(`https://api.openai.com/v1/chat/completions`, { model, messages}, { headers }).pipe(
-      map((response: any) => {
-        return response.choices[0]?.message?.content || '';
-      })
-    ).subscribe({
-      next: (responseMessage: string) => {
-        if (!this.isCanceled) {
-          this.messages[this.messages.length - 1].content = responseMessage;
-          this.messagesSubject.next(this.messages);
-
-          const waitingTime = responseMessage.length * 20;
-
-          this.responseTimeout = setTimeout(() => {
-            this.isLoading.next(false);
-            this.isCanceled = false;
-          }, waitingTime);
-        }
-      },
-      error: (error) => {
-        if (error.status === 401) {
-          this.messages[this.messages.length - 1].content = `I think you've provided me a wrong key`;
-          this.messagesSubject.next(this.messages);
-        } else {
-          this.messages[this.messages.length - 1].content = `I'm Sorry, somthing went wrong, i can't respond to this`;
-          this.messagesSubject.next(this.messages);
-        }
-      }
-    });
-  }
-
   private generateResponseMock() {
-    this.addMessage('assistant','');
+    const assistantsMessage = this.addMessage('assistant','');
 
     const botResponses: string[] = [
       "Hello! How can I help you?",
       "That's interesting!",
       "Can you tell me more?",
-      "I'm here to assist you!",
-      "What else do you need?",
+      "Hello! How can I assist you today?",
+      "I'm here to help with any questions you might have.",
+      "What topic are you interested in discussing?",
+      "Feel free to ask me anything!",
+      "I'm just a message away if you need support.",
+      "Let's dive into your query together!",
+      "I'd love to hear your thoughts!",
+      "What information can I provide for you?",
+      "Is there a specific subject you want to know more about?",
       "You can enter your API key so i stop giving you random answers!",
       "If you want to stop using mock, just type '/stopMock'",
       "You can give me an API key anytime by typing '/key API_KEY'",
@@ -161,32 +170,31 @@ export class MessagingService implements OnInit {
     this.responseTimeout = setTimeout(() => {
       const response = botResponses[Math.floor(Math.random() * botResponses.length)];
 
-      this.messages[this.messages.length-1].content = response;
-      this.messagesSubject.next(this.messages)
-      this.isLoading.next(false);
-
+      if (!this.isCanceled) {
+        assistantsMessage.content = response;
+        this.activeChat.next(this.messages);
+        this.isLoading.next(false);
+      }
     }, 800);
   }
 
   private askForKey() {
-    this.isLoading.next(true);
-
-    this.addMessage('assistant','');
+    const assistantsMessage = this.addMessage('assistant','');
 
     this.responseTimeout = setTimeout(() => {
       const response = `If you want to use a real GPT bot please give me an api key. send "/help" for more information`
 
-      this.messages[this.messages.length-1].content = response;
-      this.messagesSubject.next(this.messages)
-      this.isLoading.next(false);
+      if (!this.isCanceled) {
+        assistantsMessage.content = response;
+        this.activeChat.next(this.messages);
+        this.isLoading.next(false);
+      }
 
     }, 400);
   }
 
   private giveHelp() {
-    this.isLoading.next(true);
-
-    this.addMessage('assistant','');
+    const assistantsMessage = this.addMessage('assistant','');
 
     this.responseTimeout = setTimeout(() => {
       const response = `Commands:
@@ -195,9 +203,11 @@ export class MessagingService implements OnInit {
       "/useMock" - use a mock that gives random answers
       "/stopMock" - stop using mock service`
 
-      this.messages[this.messages.length-1].content = response;
-      this.messagesSubject.next(this.messages)
-      this.isLoading.next(false);
+      if (!this.isCanceled) {
+        assistantsMessage.content = response;
+        this.activeChat.next(this.messages);
+        this.isLoading.next(false);
+      }
     }, 400);
   }
 }

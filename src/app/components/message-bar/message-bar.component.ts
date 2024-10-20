@@ -13,15 +13,19 @@ import { MessagingService } from '../../services/messaging.service';
 export class MessageBarComponent {
   @Input() text = '';
   @ViewChild('textarea') textarea!: ElementRef<HTMLTextAreaElement>;
-  loadingResponse = false;
+  isLoadingResponse = false;
+  isTypingResponse = false;
 
   constructor(private messagingService: MessagingService) {
     this.messagingService.isLoading.subscribe(isLoading => {
-      this.loadingResponse = isLoading;
+      this.isLoadingResponse = isLoading;
+    });
+    this.messagingService.isTyping.subscribe(isTyping => {
+      this.isTypingResponse = isTyping;
     });
   }
 
-  resizeTextArea(event: Event): void {
+  resizeTextArea() {
     const textarea = this.textarea.nativeElement;
     const maxHeight = 220;
 
@@ -48,11 +52,7 @@ export class MessageBarComponent {
       this.text = '';
     }
   }
-
-  cancelResponse() {
-    this.messagingService.cancelResponse();
-  }
-
+  
   handleKeydown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       if (!event.shiftKey) {
@@ -60,5 +60,13 @@ export class MessageBarComponent {
         this.sendMessage();
       }
     }
+  }
+
+  cancelResponse() {
+    this.messagingService.cancelResponse();
+  }
+
+  isResponseInProgress() {
+    return this.isLoadingResponse || this.isTypingResponse;
   }
 }

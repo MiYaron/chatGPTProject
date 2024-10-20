@@ -45,7 +45,7 @@ describe('MessageBarComponent', () => {
     let isMessageSent = false;
     component.text = 'Message to be sent';
 
-    messagingService.messagesSubject.subscribe((messages) => {
+    messagingService.activeChat.subscribe((messages) => {
       if (isMessageSent) {
         expect(messages).toContain(jasmine.objectContaining({ content: 'Message to be sent' }));
         expect(messages.length).toBeGreaterThan(1);

@@ -20,12 +20,26 @@
     margin: 0px;
 }
 
+h1 {
+    text-align: center;
+    color: var(--color-grey-ultradark);
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+h2 {
+    text-align: center;
+    color: var(--color-black);
+    font-size: 2rem;
+    font-weight: 600;
+}
+
 span{
+    color: var(--color-grey-ultradark);
     text-align: center;
     width: 100%;
     font-size: 1rem;
     font-weight: 400;
-    color: var(--color-grey-ultradark);
     padding-bottom: 8px;
 }
 

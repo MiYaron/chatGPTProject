@@ -5,17 +5,17 @@
       name="message"
       id="message-input"
       [(ngModel)]="text"
-      (input)="resizeTextArea($event)"
+      (input)="resizeTextArea()"
       (keydown)="handleKeydown($event)"
       rows="1"
       placeholder="Message ChatGPT"
     ></textarea>
     <button
       id="send-button"
-      [ngClass]="loadingResponse ? 'stop' : ''"
+      [ngClass]="isResponseInProgress() ? 'stop' : ''"
       type="submit"
-      [disabled]="!text.trim() && !loadingResponse"
-      (click)="loadingResponse ? cancelResponse() : null"
+      [disabled]="!text.trim() && !isResponseInProgress()"
+      (click)="isResponseInProgress() ? cancelResponse() : null"
     ></button>
   </form>
 </div>

@@ -6,7 +6,7 @@
         <pre
           [ngClass]="message.role"
           *ngIf="message.content !== ''"
-        ><app-typewriter [text]="message.content"/></pre>
+        ><app-typewriter [text]="message.content" [typeSpeed]="typeSpeed" (isTyping)="setIsTyping($event)"/></pre>
       </div>
       <pre *ngIf="message.role === 'user'" [ngClass]="message.role">{{
         message.content

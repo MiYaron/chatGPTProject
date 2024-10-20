@@ -11,5 +11,4 @@ import { MainComponent } from './layouts/main/main.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'chatGPT';
 }

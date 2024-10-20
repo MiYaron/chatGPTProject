@@ -1,7 +1,13 @@
 <div id="home">
   <div id="title">
-    <h1><app-typewriter [text]="'What can I help with?'" /></h1>
-    <div class="marker-dot"></div>
+    <h2 class="welcome-message">
+      <app-typewriter
+        [text]="'What can I help with?'"
+        [typeSpeed]="20"
+        (isTyping)="showMarker($event)"
+      />
+    </h2>
+    <div #markerDot class="marker-dot"></div>
   </div>
   <app-message-bar />
   <app-suggestions (selectedSuggestion)="onSuggestionSelected($event)" />

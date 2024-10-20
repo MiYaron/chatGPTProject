@@ -39,7 +39,7 @@ span {
     .user {
         background-color: var(--color-grey-medium);
         max-width: 70%;
-        padding: 12px 26px 12px 18px;
+        padding: 12px 20px;
         margin-left: auto;
     }
 

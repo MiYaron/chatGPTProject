@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-typewriter',
@@ -10,18 +9,21 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class TypewriterComponent implements OnInit{
   @Input() text!: string;
-  speed = 20;
+  @Input() typeSpeed = 0;
+  @Output() isTyping = new EventEmitter<boolean>()
   animatedText = '';
-  isAnimating = new BehaviorSubject<boolean>(false);
 
   ngOnInit() {
+    this.isTyping.next(true);
     this.animate(0);
   }
 
   private animate(i: number) {
     if (i < this.text?.length) {
       this.animatedText += this.text.charAt(i);
-      setTimeout(() => this.animate(++i), this.speed);
+      setTimeout(() => this.animate(++i), this.typeSpeed);
+    } else {
+      this.isTyping.next(false);
     }
   }
 }

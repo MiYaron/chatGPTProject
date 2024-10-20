@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MessageBarComponent } from '../../components/message-bar/message-bar.component';
-import { MessagingService, Message } from '../../services/messaging.service';
 import { TypewriterComponent } from '../../components/typewriter/typewriter.component';
+import { MessagingService, Message } from '../../services/messaging.service';
 
 @Component({
   selector: 'app-chat',
@@ -12,13 +12,14 @@ import { TypewriterComponent } from '../../components/typewriter/typewriter.comp
   styleUrl: './chat.component.css'
 })
 export class ChatComponent implements OnInit, AfterViewChecked{
-  @ViewChild('chatWindow') chatWindow!: ElementRef;
+  @ViewChild('chatWindow') chatWindow!: ElementRef<HTMLDivElement>;
   messages: Message[] = [];
+  typeSpeed = 0;
 
   constructor(private messagingService: MessagingService) {}
 
   ngOnInit() {
-    this.messagingService.messagesSubject.subscribe((messages) => {
+    this.messagingService.activeChat.subscribe((messages) => {
       this.messages = messages;
     })
   }
@@ -27,5 +28,9 @@ export class ChatComponent implements OnInit, AfterViewChecked{
     if (this.chatWindow) {
       this.chatWindow.nativeElement.scrollTop = this.chatWindow.nativeElement.scrollHeight;
     }
+  }
+
+  setIsTyping(isTyping: boolean) {
+    this.messagingService.isTyping.next(isTyping);
   }
 }

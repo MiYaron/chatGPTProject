@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HomeComponent } from '../../pages/home/home.component';
 import { ChatComponent } from '../../pages/chat/chat.component';
 import { MessagingService } from '../../services/messaging.service';
@@ -16,7 +16,7 @@ export class MainComponent {
   constructor(private messagingService: MessagingService) {}
 
   ngOnInit() {
-    this.messagingService.messagesSubject.subscribe((messages) => {
+    this.messagingService.activeChat.subscribe((messages) => {
       if (messages.length > 0) {
         this.isActiveChat = true;
       } else {

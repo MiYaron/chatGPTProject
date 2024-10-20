@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MessageBarComponent } from '../../components/message-bar/message-bar.component';
 import { SuggestionsComponent } from '../../components/suggestions/suggestions.component';
 import { TypewriterComponent } from '../../components/typewriter/typewriter.component';
@@ -10,19 +10,18 @@ import { TypewriterComponent } from '../../components/typewriter/typewriter.comp
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent{
   @ViewChild(MessageBarComponent) messageBarComponent!: MessageBarComponent;
+  @ViewChild('markerDot') markerDot!: ElementRef<HTMLDivElement>;
 
   onSuggestionSelected(suggestion: string) {
     this.messageBarComponent.setInputMessage(suggestion);
   }
 
-  ngOnInit() {
-    setTimeout(() => {
-      const markerDot: HTMLDivElement | null = document.querySelector(".marker-dot");
-      if (markerDot) {
-        markerDot.style.display = "none";
-      }
-    }, 600);
+  showMarker(isTyping: boolean) {
+    if (this.markerDot) {
+      isTyping? this.markerDot.nativeElement.style.display = "block" :
+      this.markerDot.nativeElement.style.display = "none";
+    }
   }
 }

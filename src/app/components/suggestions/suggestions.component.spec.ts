@@ -46,14 +46,14 @@ describe('SuggestionsComponent', () => {
   it('should automatically send task message', (done) => {
     let isMessageSent = false;
 
-    messagingService.messagesSubject.subscribe((messages) => {
+    messagingService.activeChat.subscribe((messages) => {
       if (isMessageSent) {
         expect(messages.length).toBe(2);
         done();
       }
     });
 
-    component.randomTasks[0].onClick();
+    component.getRandomTasks()[0].onClick();
     isMessageSent = true;
   })
 });

@@ -9,7 +9,7 @@
 
 <div class="suggestions-grid">
   <app-clickable-card
-    *ngFor="let card of randomTasks"
+    *ngFor="let card of getRandomTasks()"
     [label]="card.label"
     [text]="card.text"
     [onClick]="card.onClick"
