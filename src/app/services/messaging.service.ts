@@ -4,7 +4,7 @@ import { BehaviorSubject, map } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
 export interface Message {
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'mock';
   content: string;
   time: number;
 }
@@ -30,6 +30,7 @@ export class MessagingService {
 
   sendMessage(message: string) {
     this.isCanceled = false;
+    this.addMessage('user', message);
     this.responseMiddleware(message);
   }
 
@@ -54,7 +55,7 @@ export class MessagingService {
     this.isTyping.next(false);
   }
 
-  private addMessage(role: 'user' | 'assistant', content: string): Message {
+  private addMessage(role: 'user' | 'assistant' | 'mock', content: string): Message {
     const newMessage: Message = {
       role,
       content,
@@ -67,28 +68,27 @@ export class MessagingService {
     return newMessage;
   }
   
-  private generateResponse() {
+  private generateResponse(message?: string) {
     const model = "gpt-4o-mini";
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.api_key}`,
       'Content-type': 'application/json; charset=UTF-8',
     });
 
-    const messages = this.messages.map(({ role, content }) => ({
-      role,
-      content,
-    }));
+    const messages = this.messages
+    .filter(({role, content}) => !content.startsWith('/') && role !== 'mock');
+
+    if (message) {
+      messages.push({role: "user", content: message, time: Date.now()});
+    }
 
     const asstiantsMessage = this.addMessage('assistant','');
 
-    this.http.post(`https://api.openai.com/v1/chat/completions`, { model, messages}, { headers }).pipe(
-      map((response: any) => {
-        return response.choices[0]?.message?.content || '';
-      })
-    ).subscribe({
-      next: (responseMessage: string) => {
+    this.http.post(`https://api.openai.com/v1/chat/completions`, { model, messages}, { headers }).subscribe({
+      next: (response: any) => {
+        const messageContent = response.choices[0]?.message?.content || '';
         if (!this.isCanceled) {
-          asstiantsMessage.content = responseMessage;
+          asstiantsMessage.content = messageContent;
 
           this.activeChat.next(this.messages);
 
@@ -123,18 +123,18 @@ export class MessagingService {
         break;
       case "/stopMock":
         this.useMock = false;
-        this.responseMiddleware("Hey there!");
+        this.responseMiddleware("");
         break;
       case "/key":
         this.api_key = message.split(" ")[1];
         this.cookieService.set('api_key', this.api_key, { secure: true });
-        this.responseMiddleware("Hey there!");
+        this.useMock = false;
+        this.generateResponse("Tell me that my key is valid, and im now able to use GPT services");
         break;
       case "/help":
         this.giveHelp();
         break;
       default:
-        this.addMessage('user', message);
         if (this.useMock) {
           this.generateResponseMock();
         } else if(this.api_key) {
@@ -146,7 +146,7 @@ export class MessagingService {
   }
 
   private generateResponseMock() {
-    const assistantsMessage = this.addMessage('assistant','');
+    const assistantsMessage = this.addMessage('mock','');
 
     const botResponses: string[] = [
       "Hello! How can I help you?",
@@ -179,7 +179,7 @@ export class MessagingService {
   }
 
   private askForKey() {
-    const assistantsMessage = this.addMessage('assistant','');
+    const assistantsMessage = this.addMessage('mock','');
 
     this.responseTimeout = setTimeout(() => {
       const response = `If you want to use a real GPT bot please give me an api key. send "/help" for more information`
@@ -194,7 +194,7 @@ export class MessagingService {
   }
 
   private giveHelp() {
-    const assistantsMessage = this.addMessage('assistant','');
+    const assistantsMessage = this.addMessage('mock','');
 
     this.responseTimeout = setTimeout(() => {
       const response = `Commands:

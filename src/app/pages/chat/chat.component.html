@@ -1,7 +1,7 @@
 <div id="chat">
   <div id="chat-window" #chatWindow>
     <div class="message" *ngFor="let message of messages">
-      <div *ngIf="message.role === 'assistant'" style="display: flex">
+      <div *ngIf="message.role !== 'user'" style="display: flex">
         <div class="bot-profile"></div>
         <pre
           [ngClass]="message.role"

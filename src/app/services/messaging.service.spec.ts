@@ -1,11 +1,11 @@
-import { Subscription } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 import { TestBed } from '@angular/core/testing';
-
-import { MessagingService } from './messaging.service';
 import { provideHttpClient } from '@angular/common/http';
+import { MessagingService } from './messaging.service';
 
 describe('MessagingService', () => {
   let service: MessagingService;
+  let cookieService: CookieService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -14,6 +14,10 @@ describe('MessagingService', () => {
       ]
     });
     service = TestBed.inject(MessagingService);
+    cookieService = TestBed.inject(CookieService);
+    
+    service.resetChat();
+    cookieService.deleteAll();
   });
 
   it('should be created', () => {
@@ -71,4 +75,18 @@ describe('MessagingService', () => {
       });
     }
   )
+
+  it ('should response that key is invalid', (done) => {
+    let isMessageSent = false;
+
+    service.activeChat.subscribe((messages) => {
+      if (isMessageSent) {
+        expect(messages[messages.length-1].content).toBe("I think you've provided me a wrong key");
+        done();
+      }
+    });
+
+    service.sendMessage("/key 12345");
+    isMessageSent = true;
+  });
 });

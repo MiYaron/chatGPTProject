@@ -43,7 +43,7 @@ span {
         margin-left: auto;
     }
 
-    .assistant {
+    .assistant, .mock{
         padding: 8px 22px;
         background-color: transparent;
         margin-right: auto;
