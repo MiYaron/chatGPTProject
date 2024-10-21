@@ -1,6 +1,21 @@
 # ChatGPT
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.8.
+and it is part of a home assignment i've received which ment to clone ChatGPT's UI in terms of visualization and behavior.
+
+I chose to use the Angular framework to deepen my knowledge of the environment while producing a readable and maintainable product.
+
+My primary goal was to make the UI as close as possible to the real ChatGPT website, including responsive behavior at different breakpoints, as well as the functionality of its components. Additionally, I aimed to keep my code clean, well-structured, and reusable.
+
+During this project, I gained a deeper understanding of how to effectively pass data between parent and child components, manage shared state across different parts of the application, and ensure that changes to state were reflected seamlessly in the UI.
+
+If I had more time, I would like to separate conversation history by timeframes and display them in distinct components within the side menu. This would improve the organization of past chats and enhance the user experience.
+
+I would also like to implement additional functionality for buttons such as "Log In" and "Sign Up" to make them fully interactive. Moreover, I would improve the autofill feature in the Suggestions component to provide more accurate suggestions based on the selected item.
+
+What I’m most proud of is that the site looks and feels very much like the real ChatGPT website. It includes key features such as the ability to use an API key, allowing users to experience full interactions with a GPT model. Additionally, I’ve implemented a mock service that replicates a bot, giving users the option to test the chat without an API key.
+
+I’ve also added custom commands that enable users to manipulate the behavior of the chat, for an easy in app use, without the need of changing the code.
 
 ## Development server
 
