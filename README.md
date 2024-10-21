@@ -65,7 +65,7 @@ to open the side menu click the ![Sidemenu](src/assets/images/sidemenu.png) on y
 
 ## Start New Conversation
 
-If you want to stop a conversation and reset the chat click the ![New Message](src/assets/images/new-msg.png).
+If you want to stop a conversation and reset the chat click the ![New Message](src/assets/images/new_msg.png).
 
 Dont worry, the conversation will be saved to your history and you will be able to return to it anytime from the Conversastion History.
 
