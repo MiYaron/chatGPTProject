@@ -10,7 +10,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 After Running the Development server and Navigating to 'http://localhost:4200/'. The main page will show up.
 
-You have a Message Box where you can type any message to the bot. you can also send Chat Commands to manipulate it's behavior (check Available Commands for more).
+You have a Message Box where you can start a conversation by sending a message. you can also send Chat Commands to manipulate the bot's behavior (check Available Chat Commands for more).
 
 Sending "/help" to the bot will be replied by all available commands
 
@@ -42,6 +42,10 @@ If you dont have an openai's API key, or you dont want to use api tokens, you ca
 to do so just send the command '/useMock' and from now on you will be replied with random answers for your questions.
 
 if you want to stop mocking just send '/stopMock'.
+
+## Conversation history
+
+You can see all your conversations history on the sidemenu ![Alt text]('./src/assets/images/sidemenu.png')
 
 ## Code scaffolding
 
