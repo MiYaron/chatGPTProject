@@ -6,6 +6,31 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
+## Usage
+
+After Running the Development server and Navigating to 'http://localhost:4200/'. The main page will show up.
+
+You have a Message Box where you can type any message to the bot. you can also send chat commands to manipulate it's behavior (check Available Commands for more).
+
+Sending "/help" to the bot will be replied by all available commands
+
+## Available Commands
+
+- /help - Shows the list of commands available in the chat.
+- /key API_KEY - Gives the bot your Openai's api key so you can talk to real GPT model.
+- /useMock - use a mock that reply with random answers.
+- /stopMock - stop using the mock.
+
+## Using real ChatGPT Model
+
+If you want to use real GPT model just send message to the bot contains command '/key' and your openai's API_KEY in the following format:
+"/key API_KEY".
+
+you should be responded that your API key is valid, the key will be kept in a cookie and you will be able to use
+real chatGPT model from now on.
+
+you can send command '/useMock' at anytime to switch to a mock bot, or '/stopMock' to return to the real model.
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
