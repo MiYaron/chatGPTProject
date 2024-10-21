@@ -31,3 +31,13 @@ app-header {
     width: 100%;
     height: 65px;
 }
+
+@media (max-width: 768px) {
+    app-sidemenu {
+        position: absolute;
+    }
+
+    #content.shrink {
+        width: 100vw;
+    }
+}

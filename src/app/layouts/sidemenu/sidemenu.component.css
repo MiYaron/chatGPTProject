@@ -1,4 +1,6 @@
 #sidemenu {
+    background-color: white;
+    border-right: 1px solid var(--color-grey-medium);
     width: 260px;
     padding: 10px 12px;
     height: 100vh;
@@ -62,3 +64,4 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
