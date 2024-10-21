@@ -35,7 +35,7 @@ real chatGPT model from now on.
 
 you can send command '/useMock' at anytime to switch to a mock bot, or '/stopMock' to return to the real model.
 
-## Using mock service
+## Using Mock Service
 
 If you dont have an openai's API key, or you dont want to use api tokens, you can chat with a mock service.
 
@@ -43,27 +43,15 @@ to do so just send the command '/useMock' and from now on you will be replied wi
 
 if you want to stop mocking just send '/stopMock'.
 
-## Conversation history
+## Conversation History
 
 You can see all your conversations history on the sidemenu
 
-to open the side menu click ![Sidemenu](src/assets/images/sidemenu.png) on your header
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+to open the side menu click the ![Sidemenu](src/assets/images/sidemenu.png) on your header
 
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
 ## Further help
 
