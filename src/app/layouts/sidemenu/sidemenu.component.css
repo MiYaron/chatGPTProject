@@ -1,0 +1,64 @@
+#sidemenu {
+    width: 260px;
+    padding: 10px 12px;
+    height: 100vh;
+    left: 0;
+}
+
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.menu-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 10px;
+}
+
+.essentials {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    align-items: center;
+    font-size: 1rem;
+
+    .icon {
+        border: 1px solid var(--color-grey-dark);
+        border-radius: 16px;
+        width: 28px;
+        height: 28px;
+    }
+
+    .gpt {
+        background-image: url('../../../assets/images/gpt_logo.png');
+        background-size: 70%; 
+        background-repeat: no-repeat; 
+        background-position: center; 
+    }
+
+    .explore {
+        background-image: url('../../../assets/images/explore.png');
+        background-size: 60%; 
+        background-repeat: no-repeat; 
+        background-position: center; 
+    }
+
+}
+
+.history {
+    h6 {
+        font-size: 0.9rem;
+        padding: 11px;
+    }
+}
+.conversation {
+    text-align: left;
+    font-size: 1.1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

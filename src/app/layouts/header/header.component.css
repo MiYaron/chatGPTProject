@@ -1,60 +1,39 @@
 header {
-    position: absolute;
     display: flex;
-    background-color: white;
-    width: 100vw;
     justify-content: space-between;
+    align-items: center;
     padding: 10px 20px;
     top: 0;
     z-index: 2;
 }
 
-#menu {
-    display: flex;
-}
-
-#auth {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
 .llm-model {
+    flex: 1;
     display: flex;
     align-items: center;
     gap: 5px;
-    background-color: transparent;
-    
-    #arrow-down {
-        background-color: transparent;
-        background-image: url('../../../assets/images/arrow_menu.png');
-        background-size: contain; 
-        background-position: bottom; 
-        background-repeat: no-repeat; 
-        border: 0;
-        width: 12px;
-        height: 8px;
-        cursor: pointer;
-    }
 }
 
-#new-chat {
+.select-model {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+#arrow-down {
     background-color: transparent;
-    background-image: url('../../../assets/images/new_msg.png');
+    background-image: url('../../../assets/images/arrow_menu.png');
     background-size: contain; 
+    background-position: bottom; 
     background-repeat: no-repeat; 
     border: 0;
-    width: 19px;
-    height: 19px;
+    width: 12px;
+    height: 8px;
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {
-    #llm-button {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    #signup {
-        display: none;
+    .llm-model {
+        flex: 0;
     }
 }

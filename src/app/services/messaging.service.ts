@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject} from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
 export interface Message {
@@ -19,6 +19,9 @@ export class MessagingService {
   private messages: Message[] = [];
   activeChat = new BehaviorSubject<Message[]>(this.messages);
 
+  chatHistory = new BehaviorSubject<Message[][]>([]);
+  restoredIndex = -1;
+
   private isCanceled = false;
   private responseTimeout: any;
   isLoading = new BehaviorSubject<boolean>(false);
@@ -26,6 +29,11 @@ export class MessagingService {
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.api_key = this.cookieService.get('api_key');
+
+    const prevHistory = this.cookieService.get('chat_history');
+    if (prevHistory) {
+      this.chatHistory.next(JSON.parse(prevHistory));
+    }
   }
 
   sendMessage(message: string) {
@@ -46,13 +54,38 @@ export class MessagingService {
   }
 
   resetChat() {
-    this.isCanceled = false;
-    this.messages.length = 0;
-    this.activeChat.next(this.messages);
+    if(this.messages.length > 0) {
+      this.saveChatHistory();
 
-    clearTimeout(this.responseTimeout); 
-    this.isLoading.next(false);
-    this.isTyping.next(false);
+      this.isCanceled = false;
+      this.messages.length = 0;
+      this.activeChat.next(this.messages);
+
+      clearTimeout(this.responseTimeout); 
+      this.isLoading.next(false);
+      this.isTyping.next(false);
+    }
+  }
+
+  restoreConversation(index: number) {
+    this.messages = [...this.chatHistory.getValue()[index]];
+    this.restoredIndex = index;
+    this.activeChat.next(this.messages);
+  }
+
+  private saveChatHistory() {
+    const history = this.chatHistory.getValue()
+    const newConversation = [...this.messages];
+
+    if (this.restoredIndex > -1) {
+      history[this.restoredIndex] = newConversation;
+    } else {
+      history.push(newConversation)
+    }
+    
+    this.chatHistory.next(history);
+    this.cookieService.set("chat_history", JSON.stringify(this.chatHistory.getValue()));
+    this.restoredIndex = -1;
   }
 
   private addMessage(role: 'user' | 'assistant' | 'mock', content: string): Message {

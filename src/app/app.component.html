@@ -1,4 +1,13 @@
-<app-header />
-<div id="content">
-  <app-main />
+<div id="app">
+  <app-sidemenu
+    [isVisible]="isSidemenuVisible"
+    (toggleVisibilty)="toggleSidemenu()"
+  />
+  <div id="content" [ngClass]="isSidemenuVisible ? 'shrink' : ''">
+    <app-header
+      [isSidemenuVisible]="isSidemenuVisible"
+      (toggleMenu)="toggleSidemenu()"
+    />
+    <app-main />
+  </div>
 </div>

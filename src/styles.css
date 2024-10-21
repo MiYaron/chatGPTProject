@@ -34,7 +34,11 @@ h2 {
     font-weight: 600;
 }
 
-span{
+ul {
+    list-style-type: none;
+}
+
+span {
     color: var(--color-grey-ultradark);
     text-align: center;
     width: 100%;
@@ -61,4 +65,26 @@ a {
     background-color: var(--color-black);
     border: 1px solid var(--color-black);
     color: white;
+}
+
+.new-chat-icon {
+    background-color: transparent;
+    background-image: url('./assets/images/new_msg.png');
+    background-size: contain; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    border: 0;
+    width: 19px;
+    height: 19px;
+}
+
+.sidemenu-icon {
+    background-color: transparent;
+    background-image: url('./assets/images/sidemenu.png');
+    background-size: contain; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    border: 0;
+    width: 21px;
+    height: 19px;
 }

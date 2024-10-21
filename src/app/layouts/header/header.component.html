@@ -1,19 +1,13 @@
 <header>
-  <div id="menu">
-    <app-menu-button (click)="newConversation()">
-      <div id="new-chat"></div>
-    </app-menu-button>
-    <app-menu-button id="llm-button">
-      <div class="llm-model">
+  <app-sideheader *ngIf="!isSidemenuVisible" (toggleMenu)="toggleSidemenu()" />
+
+  <div class="llm-model">
+    <app-menu-button>
+      <div class="select-model">
         <h1>ChatGPT 4o mini</h1>
         <div id="arrow-down"></div>
       </div>
     </app-menu-button>
   </div>
-  <div id="auth">
-    <app-small-button [style]="'dark-button'"> Log in </app-small-button>
-    <app-small-button [style]="'light-button'" id="signup">
-      <p>Sign up</p>
-    </app-small-button>
-  </div>
+  <app-auth />
 </header>

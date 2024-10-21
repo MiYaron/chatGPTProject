@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './menu-button.component.css'
 })
 export class MenuButtonComponent {
+  @Input() width?: string;
 }

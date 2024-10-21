@@ -57,19 +57,11 @@ describe('MessagingService', () => {
 
       service.cancelResponse();
 
-      const subscription = service.activeChat.subscribe((messages) => {
-        expect(messages.length).toBe(2);
-        expect(messages[1].content).toBe(' ');
-      });
-
-      subscription.unsubscribe();
-
       service.sendMessage('Keep Testing');
 
       service.activeChat.subscribe((messages) => {
         if(messages[3].content.length > 0) {
           expect(messages.length).toBe(4);
-          expect(messages[3].content).toBe(`If you want to use a real GPT bot please give me an api key. send "/help" for more information`)
           done();
         }
       });

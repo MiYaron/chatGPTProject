@@ -1,0 +1,31 @@
+<div *ngIf="isVisible" id="sidemenu">
+  <app-sideheader (toggleMenu)="toggleVisibility()" />
+  <div class="menu-content">
+    <div class="essentials-menu">
+      <app-menu-button (click)="newConversation()" [width]="'100%'">
+        <div class="essentials">
+          <div class="icon gpt"></div>
+          <p>ChatGPT</p>
+        </div>
+      </app-menu-button>
+      <app-menu-button [width]="'100%'">
+        <div class="essentials">
+          <div class="icon explore"></div>
+          <p>Explore GPTs</p>
+        </div>
+      </app-menu-button>
+    </div>
+    <div class="history">
+      <h6>History</h6>
+      <ul>
+        <li *ngFor="let chat of chatHistory; let i = index">
+          <app-menu-button (click)="loadConversation(i)" [width]="'100%'"
+            ><p class="conversation">
+              {{ chat }}
+            </p></app-menu-button
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
