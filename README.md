@@ -10,11 +10,15 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 After Running the Development server and Navigating to 'http://localhost:4200/'. The main page will show up.
 
-You have a Message Box where you can type any message to the bot. you can also send chat commands to manipulate it's behavior (check Available Commands for more).
+You have a Message Box where you can type any message to the bot. you can also send Chat Commands to manipulate it's behavior (check Available Commands for more).
 
 Sending "/help" to the bot will be replied by all available commands
 
-## Available Commands
+## Available Chat Commands
+
+The chat commands let you manipulate the behavior of the chat bot, you can send commands anytime using the Message Box just like sending a regular message.
+
+You can use the following commands:
 
 - /help - Shows the list of commands available in the chat.
 - /key API_KEY - Gives the bot your Openai's api key so you can talk to real GPT model.
@@ -30,6 +34,14 @@ you should be responded that your API key is valid, the key will be kept in a co
 real chatGPT model from now on.
 
 you can send command '/useMock' at anytime to switch to a mock bot, or '/stopMock' to return to the real model.
+
+## Using mock service
+
+If you dont have an openai's API key, or you dont want to use api tokens, you can chat with a mock service.
+
+to do so just send the command '/useMock' and from now on you will be replied with random answers for your questions.
+
+if you want to stop mocking just send '/stopMock'.
 
 ## Code scaffolding
 
