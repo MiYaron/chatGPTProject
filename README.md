@@ -31,7 +31,7 @@ Sending "/help" to the bot will be replied by all available commands
 
 ## Available Chat Commands
 
-The chat commands let you manipulate the behavior of the chat bot, you can send commands anytime using the Message Box just like sending a regular message.
+The chat commands allow you to manipulate the chatbot’s behavior directly within the app, without needing to modify a single line of code. You can send these commands at any time through the Message Box, just like sending a regular message.
 
 You can use the following commands:
 
@@ -42,13 +42,12 @@ You can use the following commands:
 
 ## Using real ChatGPT Model
 
-If you want to use real GPT model just send message to the bot contains command '/key' and your openai's API_KEY in the following format:
-"/key API_KEY".
+To use the real GPT model, simply send a message to the bot containing the command /key followed by your OpenAI API key in the following format:
+/key API_KEY.
 
-you should be responded that your API key is valid, the key will be kept in a cookie and you will be able to use
-real chatGPT model from now on.
+You will receive a confirmation that your API key is valid. The key will be stored in a cookie, allowing you to interact with the real ChatGPT model from that point onward.
 
-you can send command '/useMock' at anytime to switch to a mock bot, or '/stopMock' to return to the real model.
+At any time, you can switch to a mock bot by sending the command /useMock, and return to the real model by sending /stopMock.
 
 ## Using Mock Service
 
