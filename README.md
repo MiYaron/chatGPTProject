@@ -45,7 +45,9 @@ if you want to stop mocking just send '/stopMock'.
 
 ## Conversation history
 
-You can see all your conversations history on the sidemenu ![Sidemenu]('src/assets/images/sidemenu.png')
+You can see all your conversations history on the sidemenu
+
+to open the side menu click ![Sidemenu](src/assets/images/sidemenu.png) on your header
 
 ## Code scaffolding
 
